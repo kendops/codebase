@@ -5,7 +5,6 @@ k get configmap -n argocd
 
 argocd account update-password
 
-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
 
 customresourcedefinition.apiextensions.k8s.io/applications.argoproj.io
 kubectl get crds
@@ -74,10 +73,10 @@ argocd account list
 
 3. Set password for all the users- Developer, QAtester, and John respectively.
 
-argocd account update-password --account developer --new-password Developer123
-argocd account update-password --account qa-tester --new-password Qatester123
-argocd account update-password --account john --new-password User123
-argocd account update-password --account swilliams --new-password Redhat123
+argocd account update-password --account developer --new-password 
+argocd account update-password --account qa-tester --new-password 
+argocd account update-password --account john --new-password 
+argocd account update-password --account swilliams --new-password 
 
 4. Define the RBAC rules by adding new policies to argocd-rbac-cm config
 
