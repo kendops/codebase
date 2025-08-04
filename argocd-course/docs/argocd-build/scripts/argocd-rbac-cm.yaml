@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  # Default policy allows read-only access.
+  policy.default: role:admin
+  # Make members of the lsst-sqre/roundtable-ops team administrators
+  policy.csv: |
+      g, developer, role:admin

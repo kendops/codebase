@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: http://argo.kendopz.com
+  statusbadge.enabled: 'true'
+  resource.compareoptions: |
+    ignoreAggregatedRoles: true
+
+  # Dex handles OAuth single-sign-on (SSO).
+  dex.config: |
+    connectors:
+      ### Auth using GitHub.
+      # See https://dexidp.io/docs/connectors/github/
+      - type: github
+        name: GitHub
+        id: github
+        config:
+          clientID: ea43b014b79168c8fe88
+          clientSecret: 94631aa51e00617face0156aaa1b8f6178025ef2
+          orgs:
+          - name: devops-argo-org    # Name of the organization in Github
+            teams:                  # The list of authorized teams (optional)
+            - kendops
+            - swilliamx
+          loadAllGroups: false
+          teamNameField: slug 
+          useLoginAsID: false 
+
+      ### Active Directory Auth
+      - type: ldap
+        name: ActiveDirectory
+        id: ad
+        config:
+          host: txaddc01.kendopz.com:636
+
+          insecureNoSSL: false
+          insecureSkipVerify: true
+
+          bindDN: cn=Administrator,cn=users,dc=kendopz,dc=com
+          bindPW: admin0!
+
+          usernamePrompt: Email Address
+
+          userSearch:
+            baseDN: cn=Users,dc=kendopz,dc=com
+            filter: "(objectClass=person)"
+            username: userPrincipalName
+            idAttr: DN
+            emailAttr: userPrincipalName
+            nameAttr: cn
+
+          groupSearch:
+            baseDN: cn=Users,dc=kendopz,dc=com
+            filter: "(objectClass=group)"
+            userMatchers:
+            - userAttr: DN
+              groupAttr: member
+            nameAttr: cn
+
+      ### Okta Auth 
+      # - type: saml
+      #   name: okta
+      #   id: okta
+      #   config:
+      #     ssoURL: https://dev-XXXXXX.okta.com/app/dev-XXXXXX_argoapp_1/exk6a3vm093aguzOn5d7/sso/saml
+      #     redirectURI: https://dev-XXXXXX.okta.com/app/dev-XXXXXX_argoapp_1/exk6a3vm093aguzOn5d7/sso/saml
+      #     usernameAttr: email
+      #     emailAttr: email
+      #     groupsAttr: group
+      #     caData: "LS0tLS1CRUdXXXXXXXXXXXXXXXX"
+
+
+  # Git repositories that Argo CD monitors.
+  repositories: |
+    - url: https://github.com/argoproj/argocd-kendopz-apps.git
+    - url: https://github.com/argoproj/argo-cd.git
+
+  # Non-standard Helm chart repositories.
+  helm.repositories: |
+    # New default stable Helm chart repository
+    - url: https://charts.helm.sh/stable
+
+      name: stable
+    # For the cert-manager chart
+    - url: https://charts.jetstack.io
+      name: jetstack
+
+    # For the ingress-nginx chart
+    - url: https://kubernetes.github.io/ingress-nginx/
+      name: ingress-nginx

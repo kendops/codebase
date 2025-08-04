@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ldap-app-statging
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: ldap-app-statging     
+spec:
+  project: staging
+
+  # Source of the application manifests
+  source:
+    repoURL: git@172.29.0.37:k8s-dev-team/argocd-app-config.git
+    targetRevision: main
+    path: ldap
+
+  # Destination cluster and namespace to deploy the application
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default 
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false  
+    automated:
+      prune: true
+      selfHeal: true

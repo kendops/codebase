@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: http://argo.kendopz.com
+  statusbadge.enabled: 'true'
+  resource.compareoptions: |
+    ignoreAggregatedRoles: true
+
+  # Dex handles OAuth single-sign-on (SSO).
+  dex.config: |
+    connectors:
+      # Auth using GitHub.
+      # See https://dexidp.io/docs/connectors/github/
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: ea43b014b79168c8fe88
+          clientSecret: 94631aa51e00617face0156aaa1b8f6178025ef2
+          
+  # redirectURI: http://127.0.0.1:5556/dex/callback
+          orgs:
+          - name:devops-argo-org    # Name of the organization in Github
+            teams:                  # The list of authorized teams (optional)
+            - kendops
+            - swilliamx
+
+      # - type: saml
+      #   name: okta
+      #   id: okta
+      #   config:
+      #     ssoURL: https://dev-XXXXXX.okta.com/app/dev-XXXXXX_argoapp_1/exk6a3vm093aguzOn5d7/sso/saml
+      #     redirectURI: https://dev-XXXXXX.okta.com/app/dev-XXXXXX_argoapp_1/exk6a3vm093aguzOn5d7/sso/saml
+      #     usernameAttr: email
+      #     emailAttr: email
+      #     groupsAttr: group
+      #     caData: "LS0tLS1CRUdXXXXXXXXXXXXXXXX"
+
+  # Git repositories that Argo CD monitors.
+  repositories: |
+    - url: https://github.com/argoproj/argocd-example-apps.git
+    - url: https://github.com/argoproj/argo-cd.git
+
+  # Non-standard Helm chart repositories.
+  helm.repositories: |
+    # New default stable Helm chart repository
+    - url: https://charts.helm.sh/stable
+
+      name: stable
+    # For the cert-manager chart
+    - url: https://charts.jetstack.io
+      name: jetstack
+
+    # For the ingress-nginx chart
+    - url: https://kubernetes.github.io/ingress-nginx/
+      name: ingress-nginx

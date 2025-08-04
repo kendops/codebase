@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-tls-certs-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  argo.kendopz.com: |
+    -----BEGIN CERTIFICATE-----
+    MIIDKTCCAhGgAwIBAgIUaeRep2i0mnGf9iU0MMQAn2LGPg4wDQYJKoZIhvcNAQEL
+    BQAwEjEQMA4GA1UEAwwHa3ViZS1jYTAeFw0yMzExMTYxNzIwMTNaFw0yMzExMjYx
+    NzIwMTNaMBIxEDAOBgNVBAMMB2t1YmUtY2EwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+    DwAwggEKAoIBAQDUVLyvC+AMSfxF1CMQxVRQvx0XxleCmH91u1zEvzOlX69pD4fH
+    EhLtHV+WAwbUT/oyxfmT2rQeW2NHkhBC2NjHKdhXdlgXq5qPbuC14fPGTsQQv0Ox
+    oD6YkfbagXTxszlBiVMIzMxPy8b4SN3OAbUuLuE61dPYa9I0phlK1b0fW6AV3NRm
+    G6WCD7x+0w0gHUh000S1kuWN/ljigvw6VnJkPilOFgiwRJYlvrjuW+au5TRj3li6
+    IDuPPknjhcp3BG5+WEE4ek779go2i9SnVZECVhZULJIFqvlUi1vtsLfYt3XyDS0/
+    Tqo9S9IeXo/7yjPUEzmTzRNY3gbwc1IC+PnjAgMBAAGjdzB1MAkGA1UdEwQCMAAw
+    CwYDVR0PBAQDAgXgMBsGA1UdEQQUMBKCEGFyZ28ua2VuZG9wei5jb20wHQYDVR0O
+    BBYEFMmvi58kkNSQwnV8SPTCx9yNFmaTMB8GA1UdIwQYMBaAFG+JXKjxcHuxpVdO
+    ow4W5Tgg0dBqMA0GCSqGSIb3DQEBCwUAA4IBAQAFehnmW8juuukOLXriLQZVFhOC
+    GwtTFfD7A5cKiS611/Lrb+Q2ifCxM5/GnbRp5EK4ZTkHUTGMIMnNDryv01JoMgTY
+    O8VtbyfXnEOUngib7ZGq5OvXTs2rUqbme3T+K1pDrPYXFlVcV+WeDNQL1mPIWUYQ
+    aHQ1D0M3KtvrHMLLfVkRAM/MJzX7nh3sijQQjGEpn2525XZdEzfFPf7P7R65QGIk
+    yrfMC6lsZmrAXRTEDkg0oeiujwGcy+tnRb3jSU26MoXNXzxVNAiCS58MKd4uqvJH
+    OddXBNfjtHK3s8i4jjyUgfMWY7/hU/1PfMQAwyOlVJnYirxIHq5Q7PAsL5DU
+    -----END CERTIFICATE-----
+

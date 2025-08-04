@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: http://argocd.kendopz.com
+  statusbadge.enabled: "true"
+  admin.enabled: "true"
+  accounts.swilliams: login
+  accounts.swilliams.enabled: "true"
+  resource.compareoptions: |
+    ignoreAggregatedRoles: true
+
+  dex.config: |
+    logger:
+      level: debug
+      format: json
+    connectors:
+    ### OKTA Auth 
+      - type: saml
+        id: okta
+        name: Okta
+        config:
+          ssoURL: https://trial-4272173.okta.com/app/trial-4272173_argoapp_1/exk793buf9cAmdINz697/sso/saml
+          caData: |
+            LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURxakNDQXBLZ0F3SUJBZ0lHQVlwWXFrU3hNQTBHQ1NxR1NJYjNEUUVCQ3dVQU1JR1ZNUXN3Q1FZRFZRUUdFd0pWVXpFVE1CRUcKQTFVRUNBd0tRMkZzYVdadmNtNXBZVEVXTUJRR0ExVUVCd3dOVTJGdUlFWnlZVzVqYVhOamJ6RU5NQXNHQTFVRUNnd0VUMnQwWVRFVQpNQklHQTFVRUN3d0xVMU5QVUhKdmRtbGtaWEl4RmpBVUJnTlZCQU1NRFhSeWFXRnNMVFF5TnpJeE56TXhIREFhQmdrcWhraUc5dzBCCkNRRVdEV2x1Wm05QWIydDBZUzVqYjIwd0hoY05Nak13T1RBek1ERXpNREE0V2hjTk16TXdPVEF6TURFek1UQTRXakNCbFRFTE1Ba0cKQTFVRUJoTUNWVk14RXpBUkJnTlZCQWdNQ2tOaGJHbG1iM0p1YVdFeEZqQVVCZ05WQkFjTURWTmhiaUJHY21GdVkybHpZMjh4RFRBTApCZ05WQkFvTUJFOXJkR0V4RkRBU0JnTlZCQXNNQzFOVFQxQnliM1pwWkdWeU1SWXdGQVlEVlFRRERBMTBjbWxoYkMwME1qY3lNVGN6Ck1Sd3dHZ1lKS29aSWh2Y05BUWtCRmcxcGJtWnZRRzlyZEdFdVkyOXRNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUIKQ2dLQ0FRRUFwVWpoTm1BUGRhd1pOR2Z5UGJnU2k5eHR4Q0s3b29CamxMeXIyanFZUzFMMlRiTjFJakpNTDRIaXZnNWU1WmdRTFpiSwo4Q0pYS3ZyalJHWkFheE9yajhyNTlxblIzdGZ3ZGRSMkZ0SGlLSFRXM280aVdmTktEZHdnekJ6V1J0OFp5QmZKbDliSjdvTUJVTldVCkdhRUoxNExyd2tRSnNzajlVUVFyZVFkSm9aYVRlUC81ZVFWM3lqNVgzdG5LcGRaU3JINkZ0eUc4Sy84ZmwzNWZOZUh3RUp5MjI3OVUKdjBlRHJZNDlkN2UxQ3NmMWl1eHlXcEo1NHM4RjJiSGVqcTJvMlJLWXFNUjFqTERMVHpFdFBNcWgxV2VibjdqM0xWN3JrMVpINjdnbAppSVhPQ3pyRUFzMXVJVVUvY09raTMxTUdlUXNwSE45L3RaZzlORjJyVDNmK1h3SURBUUFCTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCCkFRQmFDZDBlcjhUeDVOSXNVaUkvMXdoSDFsaDhDZ2RCMHoxT1p3L0NObVJYcnhZWDZWYTl3Q1VrOEczajVnc2JiZTEySHg4dGRIN0cKSU9QazlDd01sc2xjdndMV3dGb3k0cUU3aG1aZ2ZDWVQvOUI4OWxBSVVudVgzb0tLSlVsQlJRQ2lseWJtc0orSURPdzdFeE9YdndOUApHbVVURGhiK1gvdTBYU0hoQlJwZThxeDk2SngxWjdZMmpoYnJHOEZzUkVTWkprajFtaHlJSWhQc0gxYmJETVRRSEVnaFRxZjVoM0pICkVSN3Z4UjRmcFBuajZPbGtLY1EvNDJaYmd0aVZFOW1VbFp3SGpCcGtHT0tWc2dXalJ2U0xaOXZPK2t0M2M3U1N6ZlVBbTJVTTJzYUYKdlZ5bXJTYllWTzZRN1FuZVNKR2VOUnFMVGc4Q0tLTldCWVgzcFVnYgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+          usernameAttr: email
+          emailAttr: email
+          groupsAttr: group
+
+    ### GitHub Auth 
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: 48ab6e8fd577a4267559
+          clientSecret: 7bd145ac7d02e6ab26349612993b5fd03b00a85b
+        orgs:
+        - name: cicd-github-actions
+
+    ### GitLab Auth 
+      - type: gitlab
+        # Required field for connector id.
+        id: gitlab
+        name: GitLab
+        config:
+          baseURL: http://gitlab.kendopz.com
+          clientID: b832820b3bf3e6d52f9c809baa7162b30fc4b7bbd285258b4fee27738a6f087b
+          clientSecret: gloas-8b56eea9736deba53fe4defe9316c7f6c81001c5ae59d74b06c67110d4a988b2
+          redirectURI: https://argocd.kendopz.com/api/dex/callback
+          groups:
+          - devops  
+ 
+      ### Active Directory Auth
+      - type: ldap
+        name: ActiveDirectory
+        id: ad
+        config:
+          host: txaddc01.kendopz.com:389
+
+          insecureNoSSL: false
+          insecureSkipVerify: true
+
+          bindDN: CN=VMADMIN,CN=Users,DC=kendopz,DC=com
+          bindPW: Password1
+
+          usernamePrompt: Email Address
+
+          userSearch:
+            baseDN: cn=Users,dc=kendopz,dc=com
+            filter: "(objectClass=person)"
+            username: userPrincipalName
+            idAttr: DN
+            emailAttr: userPrincipalName
+            nameAttr: cn
+
+          groupSearch:
+            baseDN: CN=Users,DC=kendopz,DC=com
+            filter: "(objectClass=group)"
+            userMatchers:
+            - userAttr: DN
+              groupAttr: member
+            nameAttr: cn
+
+  # Git repositories that Argo CD monitors.
+  repositories: |
+    - url: https://github.com/argoproj/argocd-example-apps.git
+    - url: https://github.com/argoproj/argo-cd.git
+    - url: https://github.com/kendops/wordpress.git
+
+  # Non-standard Helm chart repositories.
+  helm.repositories: |
+    # New default stable Helm chart repository
+    - url: https://charts.helm.sh/stable
+
+      name: stable
+    # For the cert-manager chart
+    - url: https://charts.jetstack.io
+      name: jetstack
+
+    # For the ingress-nginx chart
+    - url: https://kubernetes.github.io/ingress-nginx/
+      name: ingress-nginx
+
+    # For the Grafana subchart for Prometheus
+    - url: https://grafana.github.io/helm-charts
+      name: grafana

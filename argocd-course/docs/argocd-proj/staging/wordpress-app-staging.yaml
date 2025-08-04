@@ -1,0 +1,42 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress-app-staging
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: wordpress-app-staging       
+spec:
+  project: staging
+
+  # Source of the application manifests
+  source:
+    repoURL: https://github.com/kendops/wordpress.git 
+    # repoURL: https://github.com/kendops/wordpress.git
+    targetRevision: main
+    path: app
+
+  # Destination cluster and namespace to deploy the application
+  destination:
+    server: https://172.29.0.25:6443
+    namespace: wordpress
+  syncPolicy:
+    automated: 
+      prune: true 
+      selfHeal: true 
+      allowEmpty: false 
+    syncOptions:     
+    - Validate=true 
+    - CreateNamespace=true 
+    - PrunePropagationPolicy=foreground 
+    - PruneLast=true 
+    retry:
+      limit: 5 
+      backoff:
+        duration: 5s 
+        factor: 2
+        maxDuration: 3m 
+  revisionHistoryLimit: 10
+

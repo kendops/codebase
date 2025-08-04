@@ -1,0 +1,88 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-app-staging
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name:  monitoring-app-statging     
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: staging 
+  source:
+    path: argoCD/
+    repoURL: https://github.com/naturalett/continuous-delivery
+    targetRevision: main
+  syncPolicy:
+    automated: 
+      prune: true 
+      selfHeal: true 
+      allowEmpty: false 
+    syncOptions:     
+    - Validate=true 
+    - CreateNamespace=true 
+    - PrunePropagationPolicy=foreground 
+    - PruneLast=true 
+    retry:
+      limit: 5 
+      backoff:
+        duration: 5s 
+        factor: 2
+        maxDuration: 3m 
+  revisionHistoryLimit: 10
+
+# https://172.29.0.25:6443
+### works 
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: monitoring-app-statging
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   destination:
+#     namespace: default
+#     server: https://kubernetes.default.svc
+#   project: staging
+#   source:
+#     path: argoCD/
+#     repoURL: https://github.com/naturalett/continuous-delivery
+#     targetRevision: main
+#   syncPolicy:
+#     syncOptions:
+#       - CreateNamespace=false 
+#     automated:
+#       prune: true
+#       selfHeal: true
+
+
+## helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+## helm search repo prometheus-community
+
+## https://dzone.com/articles/deploying-prometheus-and-grafana-as-applications-u
+
+### Origirnal - working 
+
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: workshop
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: argocd
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     path: argoCD/
+#     repoURL: https://github.com/naturalett/continuous-delivery
+#     targetRevision: main
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true      

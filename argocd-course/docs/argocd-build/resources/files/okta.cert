@@ -1,0 +1,139 @@
+
+https://devopstales.github.io/kubernetes/k8s-cert/
+https://learn.microsoft.com/en-us/azure/aks/certificate-rotation
+
+kubectl config view
+curl https://{apiserver-fqdn} -k -v 2>&1 |grep expire
+
+kubectl config view --raw -o jsonpath="{.users[?(@.name == 'clusterUser_rg_myAKSCluster')].user.client-certificate-data}" | base64 -d | openssl x509 -text | grep -A2 Validity
+
+kubeadm certs check-expiration
+kubeadm certs renew all 
+
+kubectl create clusterrolebinding kubelet-bootstrap \
+    --clusterrole=system:node-bootstrapper \
+    --user=kubelet-bootstrap
+
+kubectl create clusterrolebinding node-client-auto-approve-csr \
+    --clusterrole=system:certificates.k8s.io:certificatesigningrequests:nodeclient \
+    --group=system:node-bootstrappers
+
+kubectl create clusterrolebinding node-client-auto-renew-crt \
+    --clusterrole=system:certificates.k8s.io:certificatesigningrequests:selfnodeclient \
+    --group=system:nodes
+
+kubectl config view -o jsonpath="{.clusters[?(@.name==\"$CLUSTER_NAME\")].cluster.server}"
+
+
+for i in `curl https://{apiserver-fqdn} -k -v 2>&1 |grep expire
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data "vsphere_datacenter" "dc" {
+  name = var.vcenter_datacenter
+}
+
+data "vsphere_compute_cluster" "cluster" {
+  name          = var.vsphere_drs_cluster
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+data "vsphere_resource_pool" "pool" {
+  name          = var.vcenter_pool
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+data "vsphere_datastore" "datastore" {
+  name          = var.vcenter_datastore
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+data "vsphere_network" "network" {
+  name          = var.vcenter_network
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+data "vsphere_virtual_machine" "template" {
+  name          = var.vcenter_template
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+#===============================================================================
+# Generate Templates to obfuscate secrets in them
+#===============================================================================
+
+"${file("${path.module}files/inventory.tpl")}" 
+
+data "template_file" "rke2_token" {
+  template = file("templates/config.tpl")
+  vars = {
+    my-shared-secret = "${var.rke2_token}"
+    san-1            = "${var.short_fqdn}"
+    san-2            = "${var.rancher_fqdn}"
+    san-3            = "172.29.0.90"
+    san-4            = "172.29.0.91"
+    san-5            = "172.29.0.92"
+  }
+}
+
+data "template_file" "rke2_token_server" {
+  template = file("templates/config_server.tpl")
+  vars = {
+    server           = "https://172.29.0.90:9345"
+    my-shared-secret = "${var.rke2_token}"
+    san-1            = "${var.short_fqdn}"
+    san-2            = "${var.rancher_fqdn}"
+    san-3            = "172.29.0.90"
+    san-4            = "172.29.0.91"
+    san-5            = "172.29.0.92"
+  }
+}
+#===============================================================================
+# Local Resources to create from Terraform data Templates 
+#===============================================================================
+
+resource "local_file" "rke2_token" {
+  content  = data.template_file.rke2_token.rendered
+  filename = "files/config.yaml"
+}
+
+ network_interface
+
+vsphere-cloudflare-rancher-project 
+vsphere-cloudflare-rancher-module  
+
+git clone https://github.com/Techsecom/vsphere-cloudflare-rancher-project.git
+git clone https://github.com/Techsecom/vsphere-cloudflare-rancher-module.git
+
+
+
+      network_interface.vsphere_virtual_machine.vm.*.default_ip_address
+
+
+ lifecycle {
+   ignore_changes = [
+     vsphere_virtual_machine.vm.*.default_ip_address
+   ]
+ }      

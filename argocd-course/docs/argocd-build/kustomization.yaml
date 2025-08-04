@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: argocd
+resources:
+- https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/ha/install.yaml
+- resources/argocd-namespace.yaml
+- resources/argocd-ui-ingress.yaml
+- resources/argocd-repositories.yaml
+- resources/ssh-private-repo-secret.yml
+# - resources/argocd-tls-certs-cm.yaml
+# - resource/argocd-cm-project.yaml
+# - resource/argocd-application-controller-clusterrole.yaml
+# - resource/argocd-application-controller-clusterrolebinding.yaml
+# - resources/agocd-apps/wordpgress.yml
+
+# - resources/argocd-notifications-cm.yaml
+# - resources/argocd-notifications-secret.yaml
+
+components:
+- https://github.com/argoproj-labs/argocd-extensions/manifests
+
+
+images:
+- name: quay.io/argoproj/argocd
+  newName: ghcr.io/argoproj/argo-cd/argocd
+  newTag: 2.9.0-ef24b3f8
+patches:
+- path: patches/argocd-cm.yaml
+- path: patches/argocd-rbac-cm.yaml
+- path: patches/argocd-server-service.yaml
+- path: patches/argocd-server-deployment.yaml
+- path: patches/argocd-notifications-cm.yaml
+- path: patches/argocd-notifications-controller-deploy.yaml

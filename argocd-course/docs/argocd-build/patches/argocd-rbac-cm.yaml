@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  # policy.default: role:admin
+  policy.csv: |
+    g, kendops2@gmail.com, role:admin
+    p, role:devops-role, applications, create, */*, allow
+    p, role:devops-role, applications, update, */*, allow
+    p, role:devops-role, applications, delete, */*, allow
+    p, role:devops-role, applications, sync, */*, allow
+    p, role:devops-role, applications, override, */*, allow
+    p, role:devops-role, applications, action/*, */*, allow
+    p, role:devops-role, applicationsets, get, */*, allow
+    p, role:devops-role, applicationsets, create, */*, allow
+    p, role:devops-role, applicationsets, update, */*, allow
+    p, role:devops-role, applicationsets, delete, */*, allow
+    p, role:devops-role, certificates, create, *, allow
+    p, role:devops-role, certificates, update, *, allow
+    p, role:devops-role, certificates, delete, *, allow
+    p, role:devops-role, clusters, create, *, allow
+    p, role:devops-role, clusters, update, *, allow
+    p, role:devops-role, clusters, delete, *, allow
+    p, role:devops-role, repositories, create, *, allow
+    p, role:devops-role, repositories, update, *, allow
+    p, role:devops-role, repositories, delete, *, allow
+    p, role:devops-role, projects, create, *, allow
+    p, role:devops-role, projects, update, *, allow
+    p, role:devops-role, projects, delete, *, allow
+    p, role:devops-role, accounts, update, *, allow
+    p, role:devops-role, gpgkeys, create, *, allow
+    p, role:devops-role, gpgkeys, delete, *, allow
+    p, role:devops-role, exec, create, */*, allow
+    g, devops-role, role:devops-role  
+    g, kendops2@gmail.com, role:devops-role  
+    g, cicd-github-actions:devops, role:devops-role
+    g, cicd-github-actions:devops/kendops, role:devops-role
+    p, role:dev-role, clusters, create, *, allow
+    g, admin, role:dev-role
+  scopes: '[groups, email]'

@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-rbac-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Default policy allows read-only access.
+  policy.default: role:readonly
+  # Make members of the prod team administrators
+  policy.csv: |
+      g, prod, role:admin
+
+  # policy.csv: |
+  #   # Grant all members of the group 'my-org:team-alpha; the ability to sync apps in 'my-project'
+  #   p, my-org:team-alpha, applications, sync, my-project/*, allow
+  #   # Grant all members of 'my-org:team-beta' admins
+  #   g, my-org:team-beta, role:admin
+
+# role:admin — unrestricted access to all resources
+
+
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: argocd-rbac-cm
+# data:
+#   policy.default: role:admin
+#   policy.csv: |
+#     p, admin, role:admin
+#     p, admin, applications, *, */*, allow
+#     p, admin, clusters, get, *, allow
+#     p, admin, repositories, get, *, allow
+#     p, admin, repositories, create, *, allow
+#     p, admin, repositories, update, *, allow
+#     p, admin, repositories, delete, *, allow
+#     g, github-organization-name:devops-argo-org, role:admin
+#     g, github-organization-name:devops/seniors, role:org-admin
+#     g, ArgoCDAdmins, role:admin
+#     g, DevOps, role:admin    
+#     g, group, role:admin
+#   scopes: '[email,groups]'    
+
+
+
+
+    ### GitHub Auth 
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: 9e4f82cccc0aebcb3108
+          clientSecret: cff7a25bfdbf0c0398d8211c8fbdbb62f545ab80
+          orgs:
+          - name: cicd-github-actions   
+            teams:           
+            - devops
+            - devops/kendops
+            - devops/juniors  

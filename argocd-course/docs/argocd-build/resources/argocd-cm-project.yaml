@@ -1,0 +1,15 @@
+kind: AppProject
+metadata:
+  name: dev-project
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io  
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*' 
+  sourceRepos:
+  - '*'  
